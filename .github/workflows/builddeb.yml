@@ -1,47 +1,63 @@
-# This has been created by @lillieH1000
-
-name: Build the LowContrastMode deb
+name: Build Package
 
 on:
-  workflow_dispatch:
-    
+ workflow_dispatch:
+
 jobs:
   build:
+    name: Build YTLowContrastMode
     runs-on: macos-latest
+    permissions:
+      contents: write
+
     steps:
-      - uses: actions/checkout@main
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
 
-      - name: Checkout theos/theos
-        uses: actions/checkout@main
-        with:
-          repository: theos/theos
-          ref: master
-          submodules: recursive
-          path: theos
+      - name: Setup Dependencies
+        run: brew install ldid xz
 
-      - name: Checkout chrisharper22/sdks
-        uses: actions/checkout@main
-        with:
-          repository: chrisharper22/sdks
-          ref: main
-          sparse-checkout: iPhoneOS16.5.sdk
-          path: theos/sdks
+      - name: Setup Theos
+        run: git clone --recursive https://github.com/theos/theos.git ${{ github.workspace }}/theos
 
-      - name: Checkout PoomSmart/YouTubeHeader
-        uses: actions/checkout@main
-        with:
-          repository: PoomSmart/YouTubeHeader
-          ref: main
-          path: YouTubeHeader
-
-      - name: Build Package 
+      - name: Setup iOS SDKs
         run: |
-          brew install make xz ldid 
-          export THEOS=theos
-          gmake clean package FINALPACKAGE=1
-          gmake clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+          rm -rf ${{ github.workspace }}/theos/sdks
+          git clone https://github.com/theos/sdks.git ${{ github.workspace }}/theos/sdks
 
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v6
+      - name: Build Package
+        run: |
+          make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+        env:
+          THEOS: ${{ github.workspace }}/theos
+
+      - name: Prepare Artifacts
+        run: |
+          mkdir -p output
+          cp packages/*.deb output/
+          cp LowContrastMode.plist output/
+          
+          # Move the compiled dylib into the output folder for easy sideload access
+          if [ -f .theos/obj/LowContrastMode.dylib ]; then
+            cp .theos/obj/LowContrastMode.dylib output/
+          elif [ -f .theos/obj/debug/LowContrastMode.dylib ]; then
+            cp .theos/obj/debug/LowContrastMode.dylib output/
+          fi
+
+      - name: Generate Release Tag
+        id: tag
+        run: |
+          VERSION=$(grep '^Version:' control | awk '{print $2}')
+          echo "tag=v${VERSION}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Publish to GitHub Releases
+        uses: softprops/action-gh-release@v3
         with:
-          path: packages/*.deb
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: YTLowContrastMode ${{ steps.tag.outputs.version }}
+          files: output/*
+          make_latest: true
+          fail_on_unmatched_files: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
