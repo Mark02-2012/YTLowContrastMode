@@ -1,6 +1,12 @@
 #import <UIKit/UIKit.h>
 #import <rootless.h>
 
+#define LowContrastModeEnabledKey @"lowContrastMode_enabled"
+
+static inline BOOL IS_ENABLED(NSString *key) {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:key];
+}
+
 @interface YTSettingsCell : YTCollectionViewCell
 @end
 
@@ -10,7 +16,37 @@
 @property BOOL on;
 @property BOOL (^switchBlock)(YTSettingsCell *, BOOL);
 @property int settingItemId;
-- (instancetype)initWithTitle:(NSString *)title titleDescription:(NSString *)titleDescription;
+
+- (instancetype)initWithTitle:(NSString *)title
+             titleDescription:(NSString *)titleDescription;
+
++ (instancetype)itemWithTitle:(NSString *)title
+             titleDescription:(NSString *)titleDescription
+      accessibilityIdentifier:(NSString *)identifier
+              detailTextBlock:(NSString *(^)(void))detailTextBlock
+                  selectBlock:(BOOL(^)(YTSettingsCell *, NSUInteger))selectBlock;
+
++ (instancetype)switchItemWithTitle:(NSString *)title
+                   titleDescription:(NSString *)titleDescription
+            accessibilityIdentifier:(NSString *)identifier
+                           switchOn:(BOOL)switchOn
+                        switchBlock:(BOOL(^)(YTSettingsCell *, BOOL))switchBlock
+                      settingItemId:(NSInteger)itemId;
+@end
+
+@interface YTSettingsSectionItemManager : NSObject
+@end
+
+@interface YTSettingsViewController : UIViewController
+- (void)setSectionItems:(NSArray *)items
+            forCategory:(NSUInteger)category
+                  title:(NSString *)title
+       titleDescription:(NSString *)description
+           headerHidden:(BOOL)hidden;
+@end
+
+@interface YTSettingsGroupData : NSObject
+@property(nonatomic, assign) NSInteger type;
 @end
 
 @interface _ASCollectionViewCell : UICollectionViewCell
@@ -22,10 +58,10 @@
 - (void)customizeLabel:(UILabel *)label;
 @end
 
-@interface YTColorPalette : NSObject // YTColorPalette [YouTube v16.05.7-v16.46.5]
+@interface YTColorPalette : NSObject
 @property(readonly, nonatomic) long long pageStyle;
 @end
 
-@interface YTCommonColorPalette : NSObject // YTCommonColorPalette [17.01.4-latest]
+@interface YTCommonColorPalette : NSObject
 @property(readonly, nonatomic) long long pageStyle;
 @end
