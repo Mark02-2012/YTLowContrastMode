@@ -17,7 +17,7 @@ It aims to recreate the softer, less intense look of the pre‑2020 YouTube desi
 
 ## YouTube App Version Compatibility
 Compatible with YouTube versions:  
-`v19.21.2–v20.44.2`
+`v19.21.2–v21.26.4`
 
 ## YouTube App Version Incompatibility
 Not compatible with YouTube versions:  
