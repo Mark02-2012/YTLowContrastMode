@@ -9,7 +9,7 @@
 
 #import "Tweak.h"
 
-#define TweakName @"Low Contrast Mode"
+#define TweakName @"YTLowContrastMode"
 
 static const NSInteger TweakSection = 'lcmd';
 
@@ -57,7 +57,7 @@ static const NSInteger TweakSection = 'lcmd';
     //
 
     YTSettingsSectionItem *version =
-    [Item itemWithTitle:@"Low Contrast Mode v1.8.0"
+    [Item itemWithTitle:@"YTLowContrastMode v1.8.2 by Mark02-2012"
        titleDescription:nil
 accessibilityIdentifier:nil
         detailTextBlock:nil
@@ -94,7 +94,7 @@ accessibilityIdentifier:nil
 
     YTSettingsSectionItem *enable =
     [Item switchItemWithTitle:@"Enable Low Contrast Mode"
-             titleDescription:@"Applies a dimmer appearance to YouTube."
+             titleDescription:@"Reduces UI contrast for a more comfortable viewing experience. Some UI elements are still unaffected due to legacy code and will be updated in a future release."
       accessibilityIdentifier:nil
                      switchOn:IS_ENABLED(LowContrastModeEnabledKey)
                   switchBlock:^BOOL (YTSettingsCell *cell,
@@ -119,7 +119,7 @@ accessibilityIdentifier:nil
         @selector(setSectionItems:forCategory:title:icon:titleDescription:headerHidden:)]) {
 
         YTIIcon *icon = [%c(YTIIcon) new];
-        icon.iconType = YT_SETTINGS;
+        icon.iconType = YT_BRIGHTNESS;
 
         [settingsViewController
             setSectionItems:sectionItems
