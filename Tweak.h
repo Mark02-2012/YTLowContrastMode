@@ -4,6 +4,7 @@
 #define LowContrastModeEnabledKey @"lowContrastMode_enabled"
 
 static inline BOOL IS_ENABLED(NSString *key) {
+
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     if ([defaults objectForKey:key] == nil) {
