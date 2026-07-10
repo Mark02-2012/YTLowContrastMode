@@ -4,7 +4,6 @@
 #define LowContrastModeEnabledKey @"lowContrastMode_enabled"
 
 static inline BOOL IS_ENABLED(NSString *key) {
-
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     if ([defaults objectForKey:key] == nil) {
@@ -28,9 +27,9 @@ static inline BOOL IS_ENABLED(NSString *key) {
 @end
 
 @interface YTColorPalette : NSObject
-@property(readonly, nonatomic) long long pageStyle;
+@property(nonatomic, readonly) long long pageStyle;
 @end
 
 @interface YTCommonColorPalette : NSObject
-@property(readonly, nonatomic) long long pageStyle;
+@property(nonatomic, readonly) long long pageStyle;
 @end
