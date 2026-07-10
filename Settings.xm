@@ -4,7 +4,6 @@
 #import <YouTubeHeader/YTSettingsSectionItem.h>
 #import <YouTubeHeader/YTSettingsSectionItemManager.h>
 #import <YouTubeHeader/YTSettingsViewController.h>
-#import <YouTubeHeader/YTAppSettingsPresentationData.h>
 #import <YouTubeHeader/YTSettingsCell.h>
 #import <YouTubeHeader/YTIIcon.h>
 
@@ -35,32 +34,6 @@ static const NSInteger TweakSection = 'lcmd';
                      atIndex:0];
 
     return categories.copy;
-}
-
-%end
-
-
-%hook YTAppSettingsPresentationData
-
-+ (NSArray<NSNumber *> *)settingsCategoryOrder {
-
-    NSArray<NSNumber *> *order = %orig;
-
-    NSUInteger insertIndex =
-        [order indexOfObject:@(1)];
-
-    if (insertIndex != NSNotFound) {
-
-        NSMutableArray *mutableOrder =
-            order.mutableCopy;
-
-        [mutableOrder insertObject:@(TweakSection)
-                           atIndex:insertIndex + 1];
-
-        order = mutableOrder.copy;
-    }
-
-    return order;
 }
 
 %end
