@@ -5,6 +5,7 @@
 #import <YouTubeHeader/YTSettingsSectionItemManager.h>
 #import <YouTubeHeader/YTSettingsViewController.h>
 #import <YouTubeHeader/YTAppSettingsPresentationData.h>
+#import <YouTubeHeader/YTSettingsCell.h>
 #import <YouTubeHeader/YTIIcon.h>
 
 #import "Tweak.h"
