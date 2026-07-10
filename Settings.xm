@@ -1,6 +1,16 @@
+#import <objc/runtime.h>
+
+#import <YouTubeHeader/YTSettingsGroupData.h>
+#import <YouTubeHeader/YTSettingsSectionItem.h>
+#import <YouTubeHeader/YTSettingsSectionItemManager.h>
+#import <YouTubeHeader/YTSettingsViewController.h>
+#import <YouTubeHeader/YTAppSettingsPresentationData.h>
+#import <YouTubeHeader/YTIIcon.h>
+
 #import "Tweak.h"
 
 #define TweakName @"Low Contrast Mode"
+
 static const NSInteger TweakSection = 'lcmd';
 
 @interface YTSettingsSectionItemManager (LowContrastMode)
@@ -9,52 +19,116 @@ static const NSInteger TweakSection = 'lcmd';
 
 %hook YTSettingsGroupData
 
-- (NSArray *)orderedCategories {
-    NSArray *categories = %orig;
+- (NSArray<NSNumber *> *)orderedCategories {
 
-    if (self.type != 1)
-        return categories;
+    if (self.type != 1 ||
+        class_getClassMethod(objc_getClass("YTSettingsGroupData"),
+                             @selector(tweaks))) {
+        return %orig;
+    }
 
-    NSMutableArray *array = categories.mutableCopy;
-    [array insertObject:@(TweakSection) atIndex:0];
-    return array.copy;
+    NSArray *orig = %orig;
+    NSMutableArray *categories = orig.mutableCopy;
+
+    [categories insertObject:@(TweakSection)
+                     atIndex:0];
+
+    return categories.copy;
 }
 
 %end
 
+
+%hook YTAppSettingsPresentationData
+
++ (NSArray<NSNumber *> *)settingsCategoryOrder {
+
+    NSArray<NSNumber *> *order = %orig;
+
+    NSUInteger insertIndex =
+        [order indexOfObject:@(1)];
+
+    if (insertIndex != NSNotFound) {
+
+        NSMutableArray *mutableOrder =
+            order.mutableCopy;
+
+        [mutableOrder insertObject:@(TweakSection)
+                           atIndex:insertIndex + 1];
+
+        order = mutableOrder.copy;
+    }
+
+    return order;
+}
+
+%end
+
+
 %hook YTSettingsSectionItemManager
 
-%new
+%new(v@:@)
 - (void)updateLowContrastModeSectionWithEntry:(id)entry {
 
-    NSMutableArray *sectionItems = [NSMutableArray array];
+    NSMutableArray<YTSettingsSectionItem *> *sectionItems =
+        [NSMutableArray array];
 
     Class Item = %c(YTSettingsSectionItem);
+
+    YTSettingsViewController *settingsViewController =
+        [self valueForKey:@"_settingsViewControllerDelegate"];
+
+    //
+    // Version
+    //
 
     YTSettingsSectionItem *version =
     [Item itemWithTitle:@"Low Contrast Mode v1.8.0"
        titleDescription:nil
 accessibilityIdentifier:nil
         detailTextBlock:nil
-            selectBlock:^BOOL(YTSettingsCell *cell, NSUInteger arg){
+            selectBlock:^BOOL (YTSettingsCell *cell,
+                               NSUInteger arg1) {
 
         return NO;
+
     }];
 
     [sectionItems addObject:version];
 
+    //
+    // Restart notice
+    //
+
+    YTSettingsSectionItem *restartBar =
+    [Item itemWithTitle:@"Restart YouTube after changing this option."
+       titleDescription:nil
+accessibilityIdentifier:nil
+        detailTextBlock:nil
+            selectBlock:^BOOL (YTSettingsCell *cell,
+                               NSUInteger arg1) {
+
+        return NO;
+
+    }];
+
+    [sectionItems addObject:restartBar];
+
+    //
+    // Enable switch
+    //
+
     YTSettingsSectionItem *enable =
     [Item switchItemWithTitle:@"Enable Low Contrast Mode"
-             titleDescription:@"Requires app restart"
+             titleDescription:@"Applies a dimmer appearance to YouTube."
       accessibilityIdentifier:nil
                      switchOn:IS_ENABLED(LowContrastModeEnabledKey)
-                  switchBlock:^BOOL(YTSettingsCell *cell, BOOL enabled){
+                  switchBlock:^BOOL (YTSettingsCell *cell,
+                                     BOOL enabled) {
 
         [[NSUserDefaults standardUserDefaults]
             setBool:enabled
              forKey:LowContrastModeEnabledKey];
-
-        [[NSUserDefaults standardUserDefaults] synchronize];
 
         return YES;
 
@@ -63,17 +137,37 @@ accessibilityIdentifier:nil
 
     [sectionItems addObject:enable];
 
-    YTSettingsViewController *settings =
-        [self valueForKey:@"_settingsViewControllerDelegate"];
+    //
+    // Register section
+    //
 
-    [settings setSectionItems:sectionItems
-                  forCategory:TweakSection
-                        title:TweakName
-             titleDescription:nil
-                 headerHidden:NO];
+    if ([settingsViewController respondsToSelector:
+        @selector(setSectionItems:forCategory:title:icon:titleDescription:headerHidden:)]) {
+
+        YTIIcon *icon = [%c(YTIIcon) new];
+        icon.iconType = YT_SETTINGS;
+
+        [settingsViewController
+            setSectionItems:sectionItems
+                forCategory:TweakSection
+                      title:TweakName
+                       icon:icon
+           titleDescription:nil
+               headerHidden:NO];
+
+    } else {
+
+        [settingsViewController
+            setSectionItems:sectionItems
+                forCategory:TweakSection
+                      title:TweakName
+           titleDescription:nil
+               headerHidden:NO];
+    }
 }
 
-- (void)updateSectionForCategory:(NSUInteger)category withEntry:(id)entry {
+- (void)updateSectionForCategory:(NSUInteger)category
+                       withEntry:(id)entry {
 
     if (category == TweakSection) {
         [self updateLowContrastModeSectionWithEntry:entry];
@@ -84,3 +178,7 @@ accessibilityIdentifier:nil
 }
 
 %end
+
+%ctor {
+    %init;
+}
