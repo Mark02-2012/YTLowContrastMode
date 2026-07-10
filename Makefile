@@ -10,4 +10,4 @@ LowContrastMode_FILES = \
 
 LowContrastMode_CFLAGS = -fobjc-arc
 
-include $(THEOS_MAKE_PATH)/tweak.mkk
+include $(THEOS_MAKE_PATH)/tweak.mk
