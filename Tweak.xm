@@ -2,7 +2,17 @@
 
 // Color Configuration
 static UIColor *lcmHexColor = nil;
-static UIColor *const kLowContrastColor = [UIColor colorWithRed:0.56 green:0.56 blue:0.56 alpha:1.0];
+
+static inline UIColor *LowContrastColor(void) {
+
+    CGFloat value = LCMIntensity();
+
+    return [UIColor colorWithRed:value
+                           green:value
+                            blue:value
+                           alpha:1.0];
+}
+
 static UIColor *const kDefaultTextColor = [UIColor whiteColor];
 
 // Utility Functions
@@ -20,7 +30,9 @@ static inline BOOL customContrastMode() {
 
 // Helper to get active contrast color
 static inline UIColor *activeContrastColor() {
-    return customContrastMode() && lcmHexColor ? lcmHexColor : kLowContrastColor;
+    return customContrastMode() && lcmHexColor
+        ? lcmHexColor
+        : LowContrastColor();
 }
 
 // Helper to check if dark mode is enabled
