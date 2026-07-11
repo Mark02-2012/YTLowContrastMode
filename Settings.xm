@@ -21,10 +21,10 @@ static const NSInteger TweakSection = 'lcmd';
 
 + (NSMutableArray<NSNumber *> *)tweaks {
 
-    NSMutableArray<NSNumber *> *tweaks = [%orig mutableCopy];
+    NSMutableArray<NSNumber *> *tweaks = %orig;
 
     if (!tweaks) {
-        tweaks = [NSMutableArray array];
+        return nil;
     }
 
     if (![tweaks containsObject:@(TweakSection)]) {
@@ -42,11 +42,15 @@ static const NSInteger TweakSection = 'lcmd';
         return %orig;
     }
 
-    NSArray *orig = %orig;
-    NSMutableArray *categories = orig.mutableCopy;
+    NSMutableArray<NSNumber *> *categories = [%orig mutableCopy];
 
-    [categories insertObject:@(TweakSection)
-                     atIndex:0];
+    if (!categories) {
+        return %orig;
+    }
+
+    if (![categories containsObject:@(TweakSection)]) {
+        [categories insertObject:@(TweakSection) atIndex:0];
+    }
 
     return categories.copy;
 }
