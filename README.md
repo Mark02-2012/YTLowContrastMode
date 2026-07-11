@@ -36,3 +36,8 @@ Not compatible with YouTube versions:
 
 # Screenshots
 ![IMG_1176](https://github.com/arichorn/LowContrastMode/assets/78001398/e8d83541-8e69-4985-ad29-61660046b63f)
+
+# Credits
+- Original tweak by <a href="https://github.com/PoomSmart">PoomSmart</a>
+- Settings implementation powered by <a href="https://github.com/PoomSmart/YouTubeHeader">YouTubeHeader</a>
+- Maintained by <a href="https://github.com/Mark02-2012">Mark02-2012 (me)</a>
