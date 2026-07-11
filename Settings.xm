@@ -112,6 +112,24 @@ accessibilityIdentifier:nil
     [sectionItems addObject:enable];
 
     //
+    // Intensity picker
+    //
+
+    YTSettingsSectionItem *intensity =
+[Item itemWithTitle:@"Contrast intensity"
+   titleDescription:@"Original"
+accessibilityIdentifier:nil
+    detailTextBlock:nil
+        selectBlock:^BOOL(YTSettingsCell *cell, NSUInteger arg){
+
+    // TODO: picker
+
+    return YES;
+}];
+
+[sectionItems addObject:intensity];
+
+    //
     // Register section
     //
 
