@@ -14,7 +14,7 @@
 # About the Tweak
 LowContrastMode dims the brightness of the YouTube interface by dimming icons, labels, and UI elements.  
 It aims to recreate the softer, less intense look of the pre‑2020 YouTube design.  
-My fork keep this tweak updated and adds features like setting section
+This fork keeps the tweak updated and introduces additional features, such as a native settings section inside the YouTube app.
 
 # Requirements
 - Clone <a href="https://github.com/PoomSmart/YouTubeHeader">YouTubeHeader</a> and inlude it into <a href="https://github.com/theos/theos">Theos</a> like this:
