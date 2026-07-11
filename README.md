@@ -13,7 +13,7 @@
 
 # About the Tweak
 LowContrastMode dims the brightness of the YouTube interface by dimming icons, labels, and UI elements.  
-It aims to recreate the softer, less intense look of the pre‑2020 YouTube design.
+It aims to recreate the softer, less intense look of the pre‑2020 YouTube design.  
 My fork keep this tweak updated and adds features like setting section
 
 ## YouTube App Version Compatibility
