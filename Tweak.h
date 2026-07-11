@@ -2,6 +2,7 @@
 #import <rootless.h>
 
 #define LowContrastModeEnabledKey @"lowContrastMode_enabled"
+#define LowContrastModeIntensityKey @"lowContrastMode_intensity"
 
 static inline BOOL IS_ENABLED(NSString *key) {
 
@@ -13,6 +14,18 @@ static inline BOOL IS_ENABLED(NSString *key) {
     }
 
     return [defaults boolForKey:key];
+}
+
+static inline CGFloat LCMIntensity(void) {
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    if ([defaults objectForKey:LowContrastModeIntensityKey] == nil) {
+        [defaults setFloat:0.56f forKey:LowContrastModeIntensityKey];
+        return 0.56f;
+    }
+
+    return [defaults floatForKey:LowContrastModeIntensityKey];
 }
 
 @interface YTQTMButton : UIButton
