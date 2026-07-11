@@ -28,7 +28,7 @@ This fork keeps the tweak updated and introduces additional features, such as a 
 Compatible with YouTube versions:  
 `v19.21.2–v21.26.4`
 
-**At the moment some UI stuffs are still unchanged but will be fixed with future updates**
+**Some UI elements are still unaffected due to changes introduced by Google and will be supported in future updates.**
 
 ## YouTube App Version Incompatibility
 Not compatible with YouTube versions:  
