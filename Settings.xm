@@ -6,10 +6,36 @@
 #import <YouTubeHeader/YTSettingsViewController.h>
 #import <YouTubeHeader/YTSettingsCell.h>
 #import <YouTubeHeader/YTIIcon.h>
+#import <YouTubeHeader/YTSettingsPickerViewController.h>
 
 #import "Tweak.h"
 
 #define TweakName @"YTLowContrastMode"
+
+static NSString *LCMIntensityTitle(void) {
+
+    switch ([[NSUserDefaults standardUserDefaults]
+             integerForKey:LowContrastModeIntensityKey]) {
+
+        case 0:
+            return @"Default";
+
+        case 1:
+            return @"Slightly Lighter";
+
+        case 2:
+            return @"Light";
+
+        case 3:
+            return @"Softer";
+
+        case 4:
+            return @"Almost White";
+
+        default:
+            return @"Default";
+    }
+}
 
 static const NSInteger TweakSection = 'lcmd';
 
@@ -68,7 +94,7 @@ static const NSInteger TweakSection = 'lcmd';
     //
 
     YTSettingsSectionItem *version =
-    [Item itemWithTitle:@"YTLowContrastMode v1.8.3 by Mark02-2012"
+    [Item itemWithTitle:@"YTLowContrastMode v1.8.4 by Mark02-2012"
        titleDescription:nil
 accessibilityIdentifier:nil
         detailTextBlock:nil
@@ -127,18 +153,59 @@ accessibilityIdentifier:nil
     //
 
     YTSettingsSectionItem *intensity =
-[Item itemWithTitle:@"Contrast intensity"
-   titleDescription:@"Original"
+    [Item itemWithTitle:@"Low Contrast Intensity"
+       titleDescription:LCMIntensityTitle()
 accessibilityIdentifier:nil
-    detailTextBlock:nil
-        selectBlock:^BOOL(YTSettingsCell *cell, NSUInteger arg){
+        detailTextBlock:nil
+            selectBlock:^BOOL(YTSettingsCell *cell, NSUInteger arg) {
 
-    // TODO: picker
+        NSMutableArray *rows = [NSMutableArray array];
 
-    return YES;
-}];
+        NSArray *titles = @[
+            @"Default",
+            @"Slightly Lighter",
+            @"Light",
+            @"Softer",
+            @"Almost White"
+        ];
 
-[sectionItems addObject:intensity];
+        for (NSInteger i = 0; i < titles.count; i++) {
+
+            NSInteger index = i;
+
+            [rows addObject:
+                [%c(YTSettingsSectionItem)
+                    checkmarkItemWithTitle:titles[index]
+                    selectBlock:^BOOL(YTSettingsCell *pickerCell,
+                                       NSUInteger pickerArg) {
+
+                        [[NSUserDefaults standardUserDefaults]
+                            setInteger:index
+                            forKey:LowContrastModeIntensityKey];
+
+                        return YES;
+                    }]
+            ];
+        }
+
+        YTSettingsPickerViewController *picker =
+        [[%c(YTSettingsPickerViewController) alloc]
+            initWithNavTitle:@"Low Contrast Intensity"
+         pickerSectionTitle:nil
+                       rows:rows
+          selectedItemIndex:[[NSUserDefaults standardUserDefaults]
+                                integerForKey:LowContrastModeIntensityKey]
+          parentResponder:settingsViewController];
+
+        [settingsViewController.navigationController
+            pushViewController:picker
+                     animated:YES];
+
+        return YES;
+
+    }];
+
+    [sectionItems addObject:intensity];
 
     //
     // Register section
