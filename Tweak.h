@@ -21,11 +21,30 @@ static inline CGFloat LCMIntensity(void) {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     if ([defaults objectForKey:LowContrastModeIntensityKey] == nil) {
-        [defaults setFloat:0.56f forKey:LowContrastModeIntensityKey];
+        [defaults setInteger:0 forKey:LowContrastModeIntensityKey];
         return 0.56f;
     }
 
-    return [defaults floatForKey:LowContrastModeIntensityKey];
+    switch ([defaults integerForKey:LowContrastModeIntensityKey]) {
+
+        case 0: // Default
+            return 0.56f;
+
+        case 1: // Slightly Lighter
+            return 0.62f;
+
+        case 2: // Light
+            return 0.68f;
+
+        case 3: // Softer
+            return 0.74f;
+
+        case 4: // Almost White
+            return 0.80f;
+
+        default:
+            return 0.56f;
+    }
 }
 
 @interface YTQTMButton : UIButton
