@@ -93,7 +93,7 @@ static const NSInteger TweakSection = 'lcmd';
     //
 
     YTSettingsSectionItem *version =
-    [Item itemWithTitle:@"YTLowContrastMode v1.8.3 by Mark02-2012"
+    [Item itemWithTitle:@"YTLowContrastMode v1.8.4 by Mark02-2012"
        titleDescription:nil
 accessibilityIdentifier:nil
         detailTextBlock:nil
