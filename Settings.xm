@@ -6,6 +6,7 @@
 #import <YouTubeHeader/YTSettingsViewController.h>
 #import <YouTubeHeader/YTSettingsCell.h>
 #import <YouTubeHeader/YTIIcon.h>
+#import <YouTubeHeader/YTSettingsPickerViewController.h>
 
 #import "Tweak.h"
 
@@ -152,18 +153,59 @@ accessibilityIdentifier:nil
     //
 
     YTSettingsSectionItem *intensity =
-[Item itemWithTitle:@"Low Contrast intensity"
-   titleDescription:LCMIntensityTitle()
+    [Item itemWithTitle:@"Low Contrast Intensity"
+       titleDescription:LCMIntensityTitle()
 accessibilityIdentifier:nil
-    detailTextBlock:nil
-        selectBlock:^BOOL(YTSettingsCell *cell, NSUInteger arg){
+        detailTextBlock:nil
+            selectBlock:^BOOL(YTSettingsCell *cell, NSUInteger arg) {
 
-    // TODO: picker
+        NSMutableArray *rows = [NSMutableArray array];
 
-    return YES;
-}];
+        NSArray *titles = @[
+            @"Default",
+            @"Slightly Lighter",
+            @"Light",
+            @"Softer",
+            @"Almost White"
+        ];
 
-[sectionItems addObject:intensity];
+        for (NSInteger i = 0; i < titles.count; i++) {
+
+            NSInteger index = i;
+
+            [rows addObject:
+                [%c(YTSettingsSectionItem)
+                    checkmarkItemWithTitle:titles[index]
+                    selectBlock:^BOOL(YTSettingsCell *pickerCell,
+                                       NSUInteger pickerArg) {
+
+                        [[NSUserDefaults standardUserDefaults]
+                            setInteger:index
+                            forKey:LowContrastModeIntensityKey];
+
+                        return YES;
+                    }]
+            ];
+        }
+
+        YTSettingsPickerViewController *picker =
+        [[%c(YTSettingsPickerViewController) alloc]
+            initWithNavTitle:@"Low Contrast Intensity"
+         pickerSectionTitle:nil
+                       rows:rows
+          selectedItemIndex:[[NSUserDefaults standardUserDefaults]
+                                integerForKey:LowContrastModeIntensityKey]
+          parentResponder:settingsViewController];
+
+        [settingsViewController.navigationController
+            pushViewController:picker
+                     animated:YES];
+
+        return YES;
+
+    }];
+
+    [sectionItems addObject:intensity];
 
     //
     // Register section
