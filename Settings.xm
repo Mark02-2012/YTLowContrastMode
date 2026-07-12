@@ -11,6 +11,31 @@
 
 #define TweakName @"YTLowContrastMode"
 
+static NSString *LCMIntensityTitle(void) {
+
+    switch ([[NSUserDefaults standardUserDefaults]
+             integerForKey:LowContrastModeIntensityKey]) {
+
+        case 0:
+            return @"Default";
+
+        case 1:
+            return @"Slightly Lighter";
+
+        case 2:
+            return @"Light";
+
+        case 3:
+            return @"Softer";
+
+        case 4:
+            return @"Almost White";
+
+        default:
+            return @"Default";
+    }
+}
+
 static const NSInteger TweakSection = 'lcmd';
 
 @interface YTSettingsSectionItemManager (LowContrastMode)
