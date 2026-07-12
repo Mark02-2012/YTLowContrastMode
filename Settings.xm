@@ -152,8 +152,8 @@ accessibilityIdentifier:nil
     //
 
     YTSettingsSectionItem *intensity =
-[Item itemWithTitle:@"Contrast intensity"
-   titleDescription:@"Original"
+[Item itemWithTitle:@"Low Contrast intensity"
+   titleDescription:LCMIntensityTitle()
 accessibilityIdentifier:nil
     detailTextBlock:nil
         selectBlock:^BOOL(YTSettingsCell *cell, NSUInteger arg){
