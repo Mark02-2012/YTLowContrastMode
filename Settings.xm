@@ -112,7 +112,7 @@ accessibilityIdentifier:nil
     //
 
     YTSettingsSectionItem *restartBar =
-    [Item itemWithTitle:@"Restart YouTube after changing this option."
+    [Item itemWithTitle:@"Restart YouTube after changing any option."
        titleDescription:nil
 accessibilityIdentifier:nil
         detailTextBlock:nil
