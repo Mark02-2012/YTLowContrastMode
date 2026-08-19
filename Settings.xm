@@ -76,6 +76,31 @@ static const NSInteger TweakSection = 'lcmd';
 
 %end
 
+%hook YTAppSettingsPresentationData
+
++ (NSArray<NSNumber *> *)settingsCategoryOrder {
+
+    NSArray<NSNumber *> *order = %orig;
+
+    NSUInteger insertIndex = [order indexOfObject:@(1)];
+
+    if (insertIndex != NSNotFound) {
+
+        NSMutableArray<NSNumber *> *categories = [order mutableCopy];
+
+        if (![categories containsObject:@(TweakSection)]) {
+            [categories insertObject:@(TweakSection)
+                            atIndex:insertIndex + 1];
+        }
+
+        return categories.copy;
+    }
+
+    return order;
+}
+
+%end
+
 %hook YTSettingsSectionItemManager
 
 %new(v@:@)
@@ -112,7 +137,7 @@ accessibilityIdentifier:nil
     //
 
     YTSettingsSectionItem *restartBar =
-    [Item itemWithTitle:@"Restart YouTube after changing this option."
+    [Item itemWithTitle:@"Restart YouTube after changing any option."
        titleDescription:nil
 accessibilityIdentifier:nil
         detailTextBlock:nil
