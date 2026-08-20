@@ -76,6 +76,31 @@ static const NSInteger TweakSection = 'lcmd';
 
 %end
 
+%hook YTAppSettingsPresentationData
+
++ (NSArray<NSNumber *> *)settingsCategoryOrder {
+
+    NSArray<NSNumber *> *order = %orig;
+
+    NSUInteger insertIndex = [order indexOfObject:@(1)];
+
+    if (insertIndex != NSNotFound) {
+
+        NSMutableArray<NSNumber *> *categories = [order mutableCopy];
+
+        if (![categories containsObject:@(TweakSection)]) {
+            [categories insertObject:@(TweakSection)
+                            atIndex:insertIndex + 1];
+        }
+
+        return categories.copy;
+    }
+
+    return order;
+}
+
+%end
+
 %hook YTSettingsSectionItemManager
 
 %new(v@:@)
@@ -94,7 +119,7 @@ static const NSInteger TweakSection = 'lcmd';
     //
 
     YTSettingsSectionItem *version =
-    [Item itemWithTitle:@"YTLowContrastMode v1.8.4 by Mark02-2012"
+    [Item itemWithTitle:@"YTLowContrastMode v1.8.5 by Mark02-2012"
        titleDescription:nil
 accessibilityIdentifier:nil
         detailTextBlock:nil
