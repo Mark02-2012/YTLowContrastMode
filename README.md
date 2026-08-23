@@ -25,7 +25,7 @@ This fork keeps the tweak updated and introduces additional features, such as a 
     ${{ github.workspace }}/theos/include/YouTubeHeader
 ```
 ## YouTube App Version Compatibility
-Compatible with YouTube versions:  
+Tested Compatibility: 
 `v19.21.2–v21.26.4`
 
 **Some UI elements are still unaffected due to changes introduced by Google and will be supported in future updates.**
