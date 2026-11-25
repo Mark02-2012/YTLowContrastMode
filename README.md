@@ -34,6 +34,9 @@ Tested Compatibility:
 Not compatible with YouTube versions:  
 `v19.20.2 and older`
 
+# Settings
+The tweak is disabled by default. When enabled, the default intensity is **Default** (the level previously named **Light**). You can choose darker or softer options in YouTube settings. Restart YouTube after changing an option.
+
 # Screenshots
 ![IMG_1176](https://github.com/arichorn/LowContrastMode/assets/78001398/e8d83541-8e69-4985-ad29-61660046b63f)
 

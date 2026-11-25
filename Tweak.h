@@ -9,8 +9,8 @@ static inline BOOL IS_ENABLED(NSString *key) {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     if ([defaults objectForKey:key] == nil) {
-        [defaults setBool:YES forKey:key];
-        return YES;
+        [defaults setBool:NO forKey:key];
+        return NO;
     }
 
     return [defaults boolForKey:key];
@@ -22,19 +22,19 @@ static inline CGFloat LCMIntensity(void) {
 
     if ([defaults objectForKey:LowContrastModeIntensityKey] == nil) {
         [defaults setInteger:0 forKey:LowContrastModeIntensityKey];
-        return 0.56f;
+        return 0.68f;
     }
 
     switch ([defaults integerForKey:LowContrastModeIntensityKey]) {
 
-        case 0: // Default
-            return 0.56f;
+        case 0: // Default (previously Light)
+            return 0.68f;
 
-        case 1: // Slightly Lighter
+        case 1: // Slightly Darker
             return 0.62f;
 
-        case 2: // Light
-            return 0.68f;
+        case 2: // Darker
+            return 0.56f;
 
         case 3: // Softer
             return 0.74f;
@@ -43,7 +43,7 @@ static inline CGFloat LCMIntensity(void) {
             return 0.80f;
 
         default:
-            return 0.56f;
+            return 0.68f;
     }
 }
 

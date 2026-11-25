@@ -21,10 +21,10 @@ static NSString *LCMIntensityTitle(void) {
             return @"Default";
 
         case 1:
-            return @"Slightly Lighter";
+            return @"Slightly Darker";
 
         case 2:
-            return @"Light";
+            return @"Darker";
 
         case 3:
             return @"Softer";
@@ -114,41 +114,6 @@ static const NSInteger TweakSection = 'lcmd';
     YTSettingsViewController *settingsViewController =
         [self valueForKey:@"_settingsViewControllerDelegate"];
 
-    //
-    // Version
-    //
-
-    YTSettingsSectionItem *version =
-    [Item itemWithTitle:@"YTLowContrastMode v1.8.5 by Mark02-2012"
-       titleDescription:nil
-accessibilityIdentifier:nil
-        detailTextBlock:nil
-            selectBlock:^BOOL (YTSettingsCell *cell,
-                               NSUInteger arg1) {
-
-        return NO;
-
-    }];
-
-    [sectionItems addObject:version];
-
-    //
-    // Restart notice
-    //
-
-    YTSettingsSectionItem *restartBar =
-    [Item itemWithTitle:@"Restart YouTube after changing any option."
-       titleDescription:nil
-accessibilityIdentifier:nil
-        detailTextBlock:nil
-            selectBlock:^BOOL (YTSettingsCell *cell,
-                               NSUInteger arg1) {
-
-        return NO;
-
-    }];
-
-    [sectionItems addObject:restartBar];
 
     //
     // Enable switch
@@ -156,7 +121,7 @@ accessibilityIdentifier:nil
 
     YTSettingsSectionItem *enable =
     [Item switchItemWithTitle:@"Enable Low Contrast Mode"
-             titleDescription:@"Reduces UI contrast for a more comfortable viewing experience. Some UI elements are still unaffected due to legacy code and will be updated in a future release."
+             titleDescription:@"Reduces UI contrast for a more comfortable viewing experience. Some UI elements are still unaffected due to legacy code and will be updated in a future release.\nYTLowContrastMode v1.8.6 by Mark02-2012"
       accessibilityIdentifier:nil
                      switchOn:IS_ENABLED(LowContrastModeEnabledKey)
                   switchBlock:^BOOL (YTSettingsCell *cell,
@@ -179,7 +144,7 @@ accessibilityIdentifier:nil
 
     YTSettingsSectionItem *intensity =
     [Item itemWithTitle:@"Low Contrast Intensity"
-       titleDescription:LCMIntensityTitle()
+       titleDescription:[NSString stringWithFormat:@"%@\nRestart YouTube after changing any option.", LCMIntensityTitle()]
 accessibilityIdentifier:nil
         detailTextBlock:nil
             selectBlock:^BOOL(YTSettingsCell *cell, NSUInteger arg) {
@@ -188,8 +153,8 @@ accessibilityIdentifier:nil
 
         NSArray *titles = @[
             @"Default",
-            @"Slightly Lighter",
-            @"Light",
+            @"Slightly Darker",
+            @"Darker",
             @"Softer",
             @"Almost White"
         ];
