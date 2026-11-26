@@ -126,7 +126,7 @@ accessibilityIdentifier:nil
 
     YTSettingsSectionItem *restartInfo =
     [Item itemWithTitle:nil
-       titleDescription:@"Restart YouTube after changing any option."
+       titleDescription:@"Restart YouTube after changing this option."
 accessibilityIdentifier:nil
         detailTextBlock:nil
             selectBlock:nil];
