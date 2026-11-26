@@ -115,13 +115,31 @@ static const NSInteger TweakSection = 'lcmd';
         [self valueForKey:@"_settingsViewControllerDelegate"];
 
 
+    YTSettingsSectionItem *version =
+    [Item itemWithTitle:@"YTLowContrastMode v1.8.6 by Mark02-2012"
+       titleDescription:nil
+accessibilityIdentifier:nil
+        detailTextBlock:nil
+            selectBlock:nil];
+    version.enabled = NO;
+    [sectionItems addObject:version];
+
+    YTSettingsSectionItem *restartInfo =
+    [Item itemWithTitle:nil
+       titleDescription:@"Restart YouTube after changing any option."
+accessibilityIdentifier:nil
+        detailTextBlock:nil
+            selectBlock:nil];
+    restartInfo.enabled = NO;
+    [sectionItems addObject:restartInfo];
+
     //
     // Enable switch
     //
 
     YTSettingsSectionItem *enable =
     [Item switchItemWithTitle:@"Enable Low Contrast Mode"
-             titleDescription:@"Reduces UI contrast for a more comfortable viewing experience. Some UI elements are still unaffected due to legacy code and will be updated in a future release.\nYTLowContrastMode v1.8.6 by Mark02-2012"
+             titleDescription:@"Reduces UI contrast for a more comfortable viewing experience. Some UI elements are still unaffected due to legacy code and will be updated in a future release."
       accessibilityIdentifier:nil
                      switchOn:IS_ENABLED(LowContrastModeEnabledKey)
                   switchBlock:^BOOL (YTSettingsCell *cell,
@@ -144,7 +162,7 @@ static const NSInteger TweakSection = 'lcmd';
 
     YTSettingsSectionItem *intensity =
     [Item itemWithTitle:@"Low Contrast Intensity"
-       titleDescription:[NSString stringWithFormat:@"%@\nRestart YouTube after changing any option.", LCMIntensityTitle()]
+       titleDescription:LCMIntensityTitle()
 accessibilityIdentifier:nil
         detailTextBlock:nil
             selectBlock:^BOOL(YTSettingsCell *cell, NSUInteger arg) {
